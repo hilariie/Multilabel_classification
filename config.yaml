@@ -1,0 +1,23 @@
+train_path: 'data/train'
+
+val_path: 'data/val'
+
+epochs: 100
+
+multi_output: True
+
+batch_size: 32
+
+blocks:
+ - 128
+ - 32
+ - 16
+ - 8
+
+patience: 3
+
+dropout: 0
+
+augmentation: True
+
+verbose: 1
