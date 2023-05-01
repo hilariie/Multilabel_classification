@@ -23,7 +23,7 @@ modification to suit your use case.
 ## How to use
 To use this architecture on a multiclass problem, follow the steps below:
 
-1. Clone the repository using `git clone <url>`
+1. Clone the repository using `git clone https://github.com/hilariie/Multilabel_classification.git`
 2. Navigate to the directory using `cd Multilabel_classification`
 3. Modify the `train_path` in the `config.yaml` file to your own training directory.
 4. Modify the `val_path` in the `config.yaml` file to your validation directory.
