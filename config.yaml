@@ -10,11 +10,9 @@ batch_size: 32
 
 blocks:
  - 128
- - 32
- - 16
- - 8
+ - 64
 
-patience: 3
+patience: 5
 
 dropout: 0
 

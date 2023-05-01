@@ -1,5 +1,8 @@
-# training and test data
-datasets
+# datasets
+data
+
+# saved model
+model.h5
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,8 +1,8 @@
 if __name__ == '__main__':
     from functions import train_model
     import yaml
-    import pickle
-    
+    from tensorflow.keras.models import save_model
+
     with open('config.yaml', 'r') as file:
         yml = yaml.safe_load(file)
     # Read parameters from yml file
@@ -17,24 +17,26 @@ if __name__ == '__main__':
     augmentation = yml['augmentation']
     verbose = yml['verbose']
     
-    hist, model = train_model(train_path, val_path,
-                epochs=epochs,
-                multi_output=multi_output,
-                batch_size=batch_size,
-		    blocks=blocks,
-                patience=patience,
-                dropout=dropout,
-                augmentation=augmentation,
-                verbose=verbose)
+    hist, model = train_model(train_path,
+                              val_path,
+                              epochs=epochs,
+                              multi_output=multi_output,
+                              batch_size=batch_size,
+                              blocks=blocks,
+                              patience=patience,
+                              dropout=dropout,
+                              augmentation=augmentation,
+                              verbose=verbose)
 
+    # get accuracies considering callback clause was called. This is done by default
     if multi_output:
-        score = 0
-        for key, value in hist.items():
-            if ('val' in key) and ('acc' in key):
-                score += value[-1]
-        print("\nAverage Accuracy: {:.2f}%\n".format((score*100) / 5))
+        acc = round(max(hist['val_avg_acc']) * 100, 1)
+    else:
+        acc = round(max(hist['val_acc']) * 100, 1)
 
-    save_model = input("Save model? (y/n)")
-    if save_model == 'y':
-        pickle.dump(model, open('model.pkl', 'wb'))
+    print('Best accuracy: ', acc)
+    save_ = input("Save model? (y/n)")
+    if save_ == 'y':
+        save_model(model, f'model_{round(acc)}.h5')
         print('Saved')
+
