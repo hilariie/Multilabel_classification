@@ -1,6 +1,6 @@
-train_path: 'data/train'
+train_path: 'data\train'
 
-val_path: 'data/val'
+val_path: 'data\val'
 
 epochs: 100
 
@@ -19,3 +19,5 @@ dropout: 0
 augmentation: True
 
 verbose: 1
+
+model: VGG16

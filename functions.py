@@ -1,16 +1,13 @@
 import numpy as np 
-import pandas as pd 
 import os
 from tensorflow.keras.utils import load_img, img_to_array
 from keras.utils import to_categorical
 from sklearn.utils import shuffle
 from tensorflow.keras.preprocessing import image
-from tensorflow.keras.applications import VGG16
+from tensorflow.keras.applications import __dict__ as tf_models
 from tensorflow.keras.layers import Flatten, Dense, Dropout
 from tensorflow.keras.models import Model
 from tensorflow.keras.callbacks import Callback, EarlyStopping
-
-# from concurrent import futures
 
 
 def append_df(path, classes, num_classes):
@@ -101,23 +98,29 @@ def train_model(train_path,
                 val_path, 
                 epochs=100, 
                 multi_output=True, 
-                batch_size=32, 
-                blocks=[64, 32],
+                batch_size=32,
+                blocks=None,
                 patience=3,
                 dropout=0,
                 augmentation=False,
-                verbose=1
+                verbose=1,
+                model='VGG16'
                 ):
     """
     Train VGG16 model on dataset using multiple prediction layers or single prediction layer
     """
+    if blocks is None:
+        blocks = [64, 32]
     _, num_train_samples, num_classes = pre_gen(train_path)
     _, num_val_samples, _ = pre_gen(val_path)
     train_generator = generator(train_path, multi_output=multi_output, batch_size=batch_size, augmentation=augmentation)
     val_generator = generator(val_path, multi_output=multi_output, augmentation=False)
-    
-    base_model = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
-    
+
+    try:
+        base_model = tf_models[model](weights='imagenet', include_top=False, input_shape=(224, 224, 3))
+    except KeyError:
+        raise ValueError(f"Invalid model name: {model}. "
+                         f"Check https://keras.io/api/applications/ for available models")
     for layer in base_model.layers:
         layer.trainable = False
 
